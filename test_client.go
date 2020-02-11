@@ -50,17 +50,12 @@ func MakeRequest(client *http.Client, url string, backoff_counter int, ch chan<-
 
 func main() {
 	runtime.GOMAXPROCS(5)
-	patient_name := os.Args[1]
-	ip := os.Args[2]
-	fmt.Println(patient_name,ip)
-
+	sleep(rand.Intn(100))
 	// client := &http.Client{}
 	// ch := make(chan string)
-	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&value=0.0&vtype=ECG"
+	address := "http://130.207.25.147:8080"
 	fmt.Println(address)
-	// request for one inference is 30s * 125 Hz 
-	// for exepriment we want to do 2 inference/min * 5 min
-	totalRequest := 30 * 125 * 2
+	totalRequest := 3751
 	tr := &http.Transport{
 		// DialContext:(&net.Dialer{
   //           Timeout:   300 * time.Second,
@@ -78,8 +73,8 @@ func main() {
 	ch := make(chan string)
 	for i := 0; i <= totalRequest; i++ {
 		// wait for 8 milliseconds to simulate the patient
-		// incoming data 125 Hz * 2 data point per request
-		time.Sleep(8 * time.Millisecond)
+		// incoming data
+		time.Sleep(20 * time.Millisecond)
 		// This how actual client will send the result
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send
