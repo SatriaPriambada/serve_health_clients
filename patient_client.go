@@ -56,10 +56,10 @@ func main() {
 
 	// client := &http.Client{}
 	// ch := make(chan string)
-	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&vtype=ECG"
+	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&value=0.0&vtype=ECG"
 	fmt.Println(address)
-	// request is 30s * 250 Hz
-	totalRequest := 7501
+	// request is 30s * 2 * 125 Hz * 2 request/min * 5 min
+	totalRequest := 30 * 2 * 125 * 1
 	tr := &http.Transport{
 		// DialContext:(&net.Dialer{
   //           Timeout:   300 * time.Second,
@@ -76,9 +76,9 @@ func main() {
 	start := time.Now()
 	ch := make(chan string)
 	for i := 0; i <= totalRequest; i++ {
-		// wait for 4 milliseconds to simulate the patient
-		// incoming data 250 Hz
-		time.Sleep(4 * time.Millisecond)
+		// wait for 8 milliseconds to simulate the patient
+		// incoming data 125 Hz * 2 data point per request
+		time.Sleep(8 * time.Millisecond)
 		// This how actual client will send the result
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send
