@@ -60,7 +60,7 @@ func main() {
 	fmt.Println(address)
 	// request for one inference is 30s * 125 Hz 
 	// for exepriment we want to do 2 inference/min * 5 min
-	totalRequest := 30 * 125 * 2
+	totalRequest := 30 * 125 * 50
 	tr := &http.Transport{
 		// DialContext:(&net.Dialer{
   //           Timeout:   300 * time.Second,
