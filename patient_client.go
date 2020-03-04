@@ -11,6 +11,7 @@ import (
 	"math"
 	"math/rand"
 	"log"
+	"strconv"
 )
 
 var Maximum_backoff = 32000 //in millisecond
@@ -81,7 +82,9 @@ func main() {
 		// wait for 8 milliseconds to simulate the patient
 		// incoming data 125 Hz * 2 data point per request
 		time.Sleep(8 * time.Millisecond)
-		fmt.Println(patient_name, " request:",address)
+		if math.Mod(float64(i), 125) == 0 {
+			fmt.Println(patient_name, "req ", strconv.Itoa(int(i/125)), "s :",address)
+		}
 		// This how actual client will send the result
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send
@@ -92,7 +95,4 @@ func main() {
 		fmt.Println(<-ch)
 	}
 	fmt.Printf("client finished %.2fs elapsed\n", time.Since(start).Seconds())
-	// sleep 1 minute to make sure all previous request and socket file descriptor are closed
-	// fmt.Println("start sleeping to make sure all socket killed")
-	// time.Sleep(time.Minute * 1)
 }
